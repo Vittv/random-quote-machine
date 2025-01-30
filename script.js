@@ -1,7 +1,7 @@
 $(document).ready(function() {
     function getRandomQuote() {
         return $.ajax({
-            url: "https://api.quotable.io/random",
+            url: "https://quoteslate.vercel.app/api/quotes/random", // Using QuoteSlate API
             method: "GET",
             dataType: "json"
         });
@@ -9,19 +9,18 @@ $(document).ready(function() {
 
     function displayQuote() {
         getRandomQuote().done(function(data) {
-            
             $('#text span, #author, #start-quote').fadeOut(500, function() {
-                
-                $('#text span').text(data.content);
+                // Accessing the quote and author from the QuoteSlate API response
+                $('#text span').text(data.quote);
                 $('#author').text(data.author);
-                
-                
+
                 $('#text span, #author, #start-quote').fadeIn(500);
             });
 
-            console.log(`${data.content}`);
-            updateTweetButton(data.content, data.author);
-            updateTumblrButton(data.content, data.author);
+            // Update social media buttons
+            console.log(`${data.quote}`);
+            updateTweetButton(data.quote, data.author);
+            updateTumblrButton(data.quote, data.author);
         }).fail(function() {
             $('#text span, #author, #start-quote').fadeOut(500, function() {
                 $('#text span').text("An error occurred. Please try again.");
@@ -52,5 +51,6 @@ $(document).ready(function() {
         }
     });
 
+    // Load the first quote when the page is ready
     displayQuote();
 });
